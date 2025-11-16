@@ -1,3 +1,4 @@
+"use client"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,12 +15,21 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { useActionState } from "react"
+import { LoginAction } from "@/app/login/login-action"
 
 
 export function LoginForm({
   className,
 
 }: React.ComponentProps<"div">) {
+
+  const [state, formAction, isPending]= useActionState(LoginAction, {
+    success: false,
+    message: "",
+    error: null
+  })
+
   return (
     <section className="max-w-lg mx-auto py-20">
     <div className={cn("flex flex-col gap-6", className)}>
@@ -31,12 +41,13 @@ export function LoginForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="flex flex-col gap-4">
+          <form action={formAction} className="flex flex-col gap-4" >
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="m@example.com"
                   required
@@ -52,10 +63,26 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input id="password" name="password" type="password" required />
               </Field>
+              {state.error && (
+                <Field>
+                  <div className="p-3 rounded-md text-sm bg-red-50 text-red-800 border border-red-200">
+                    <strong>Error:</strong> {state.error}
+                  </div>
+                </Field>
+              )}
+              {state.message && state.success && (
+                <Field>
+                  <div className="p-3 rounded-md text-sm bg-green-50 text-green-800 border border-green-200">
+                    {state.message}
+                  </div>
+                </Field>
+              )}
               <Field className="flex flex-col gap-2">
-                <Button type="submit" className="w-full">Login</Button>
+                <Button type="submit" className="w-full" disabled={isPending}>
+                  {isPending ? "Logging in..." : "Login"}
+                </Button>
                 <Button variant="outline" type="button" className="w-full">
                   Login with Google
                 </Button>
