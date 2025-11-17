@@ -5,39 +5,34 @@ export type User = {
   password: string;
 };
 
-// Fake users database
+// Fake users database - Story 2: Admin Console roles
 export const fakeUsers: User[] = [
   {
-    name: "Ramesh Kumar",
-    email: "ramesh@example.com",
-    role: "admin",
-    password: "password123",
+    name: "Admin User",
+    email: "admin@perceivenow.com",
+    role: "Admin",
+    password: "admin123",
   },
   {
-    name: "Sita Devi",
-    email: "sita@example.com",
-    role: "user",
-    password: "sita123",
+    name: "Analyst User",
+    email: "analyst@perceivenow.com",
+    role: "Analyst",
+    password: "analyst123",
   },
   {
-    name: "Hari Shrestha",
-    email: "hari@example.com",
-    role: "moderator",
-    password: "hari456",
+    name: "Viewer User",
+    email: "viewer@perceivenow.com",
+    role: "Viewer",
+    password: "viewer123",
   },
 ];
 
-/**
- * Fake login function - simulates user authentication
- * @param email - User email
- * @param password - User password
- * @returns User object if credentials match, null otherwise
- */
+
 export async function authenticateUser(
   email: string,
   password: string
 ): Promise<User | null> {
-  // Simulate API delay
+  // making fake api delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   // Find user by email and password

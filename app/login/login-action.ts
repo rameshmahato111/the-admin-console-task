@@ -1,9 +1,12 @@
-import { authenticateUser } from "@/lib/user";
+import { authenticateUser, type User } from "@/lib/user";
+
+export type LoginUser = Omit<User, "password">;
 
 type prevState = {
   success: boolean;
   message: string;
   error: null | string;
+  user: LoginUser | null;
 };
 
 export const LoginAction = async (
@@ -14,28 +17,33 @@ export const LoginAction = async (
   const password = formData.get("password") || "";
 
   try {
-    // Validate input
+
     if (!email || !password) {
       throw new Error("Email or password is required");
     }
 
-    // Authenticate user using fake user database
+ 
     const user = await authenticateUser(email as string, password as string);
 
     if (!user) {
       throw new Error("Invalid email or password");
     }
 
+  
+    const { password: _, ...userWithoutPassword } = user;
+
     return {
       success: true,
       message: `Login successful! Welcome, ${user.name} (${user.role})`,
       error: null,
+      user: userWithoutPassword,
     };
   } catch (error: unknown) {
     return {
       success: false,
       message: error instanceof Error ? error.message : String(error),
       error: error instanceof Error ? error.message : String(error),
+      user: null,
     };
   }
 };

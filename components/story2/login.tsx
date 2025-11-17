@@ -15,8 +15,9 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { useActionState } from "react"
+import { useActionState, useEffect } from "react"
 import { LoginAction } from "@/app/login/login-action"
+import { saveUserToStorage } from "@/lib/auth"
 
 
 export function LoginForm({
@@ -27,8 +28,19 @@ export function LoginForm({
   const [state, formAction, isPending]= useActionState(LoginAction, {
     success: false,
     message: "",
-    error: null
+    error: null,
+    user: null
   })
+
+  // Save user to localStorage when login is successful
+  useEffect(() => {
+    if (state.success && state.user) {
+      saveUserToStorage(state.user);
+      // Also set cookie for server-side access
+      document.cookie = `userRole=${state.user.role}; path=/; max-age=86400`; // 24 hours
+      document.cookie = `userEmail=${state.user.email}; path=/; max-age=86400`;
+    }
+  }, [state.success, state.user])
 
   return (
     <section className="max-w-lg mx-auto py-20">
