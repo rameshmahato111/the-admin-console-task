@@ -1,14 +1,24 @@
+"use client";
+
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { Separator } from '@radix-ui/react-separator'
+import { PermissionWrapper } from '@/components/rbac/permission-wrapper'
+import { useActionPermission } from '@/lib/hooks/use-permissions'
 
 
 const UserManagement = () => {
+  const canCreate = useActionPermission("users", "create");
+  const canEdit = useActionPermission("users", "edit");
+  const canDelete = useActionPermission("users", "delete");
+
   return (
      <section className="mb-8">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold">Access Control</h2>
-            <Button>Manage Users</Button>
+            <PermissionWrapper permission="create:users">
+              <Button>Manage Users</Button>
+            </PermissionWrapper>
           </div>
           <Card>
             <CardHeader>
@@ -31,9 +41,11 @@ const UserManagement = () => {
                           Full access to all features
                         </p>
                       </div>
-                      <Button variant="outline" size="sm">
-                        Edit Permissions
-                      </Button>
+                      {canEdit && (
+                        <Button variant="outline" size="sm">
+                          Edit Permissions
+                        </Button>
+                      )}
                     </div>
                     <Separator />
                     <div className="flex items-center justify-between">
@@ -43,9 +55,11 @@ const UserManagement = () => {
                           View and edit workflows, agents, policies
                         </p>
                       </div>
-                      <Button variant="outline" size="sm">
-                        Edit Permissions
-                      </Button>
+                      {canEdit && (
+                        <Button variant="outline" size="sm">
+                          Edit Permissions
+                        </Button>
+                      )}
                     </div>
                     <Separator />
                     <div className="flex items-center justify-between">
@@ -55,9 +69,11 @@ const UserManagement = () => {
                           Read-only access to dashboard
                         </p>
                       </div>
-                      <Button variant="outline" size="sm">
-                        Edit Permissions
-                      </Button>
+                      {canEdit && (
+                        <Button variant="outline" size="sm">
+                          Edit Permissions
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </div>

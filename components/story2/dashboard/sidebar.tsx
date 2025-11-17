@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useFeatureAccess } from "@/lib/hooks/use-permissions";
 import {
   LayoutDashboard,
   Bot,
@@ -19,41 +20,66 @@ const navigation = [
     href: "/dashboard#metrics",
     icon: BarChart3,
     top: true,
+    feature: "metrics",
   },
   {
     name: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
+    feature: "metrics", // Dashboard is accessible to all logged-in users
   },
   {
     name: "Workflows",
     href: "/dashboard#workflows",
     icon: Workflow,
+    feature: "workflows",
   },
   {
     name: "Agents",
     href: "/dashboard#agents",
     icon: Bot,
+    feature: "agents",
   },
   {
     name: "Policies",
     href: "/dashboard#policies",
     icon: Shield,
+    feature: "policies",
   },
   {
     name: "User Management",
     href: "/dashboard#users",
     icon: Users,
+    feature: "users",
   },
   {
     name: "Logs",
     href: "/dashboard#logs",
     icon: FileText,
+    feature: "logs",
   },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
+  
+  // Filter navigation items based on user permissions
+  const canAccessMetrics = useFeatureAccess("metrics");
+  const canAccessWorkflows = useFeatureAccess("workflows");
+  const canAccessAgents = useFeatureAccess("agents");
+  const canAccessPolicies = useFeatureAccess("policies");
+  const canAccessUsers = useFeatureAccess("users");
+  const canAccessLogs = useFeatureAccess("logs");
+
+  const filteredNavigation = navigation.filter((item) => {
+    if (item.feature === "metrics") return canAccessMetrics;
+    if (item.feature === "workflows") return canAccessWorkflows;
+    if (item.feature === "agents") return canAccessAgents;
+    if (item.feature === "policies") return canAccessPolicies;
+    if (item.feature === "users") return canAccessUsers;
+    if (item.feature === "logs") return canAccessLogs;
+    return true; // Dashboard always visible
+  });
 
   return (
     <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r bg-white dark:bg-zinc-950">
@@ -67,7 +93,7 @@ export default function Sidebar() {
 
         {/* Navigation */}
         <nav className="flex-1 space-y-1 px-3 py-4">
-          {navigation.map((item) => {
+          {filteredNavigation.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
             

@@ -19,7 +19,18 @@ export function getUserRole(request: NextRequest): string | null {
   }
   
   try {
-    const user = JSON.parse(userCookie);
+    // Next.js cookies() automatically handles encoding/decoding
+    // But if we get URL-encoded value, try to decode it
+    let cookieValue = userCookie;
+    if (cookieValue.includes('%')) {
+      try {
+        cookieValue = decodeURIComponent(cookieValue);
+      } catch {
+        // If decode fails, use original value
+      }
+    }
+    
+    const user = JSON.parse(cookieValue);
     return user.role || null;
   } catch {
     return null;

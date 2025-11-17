@@ -1,15 +1,25 @@
+"use client";
+
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-
+import { PermissionWrapper } from '@/components/rbac/permission-wrapper'
+import { useActionPermission } from '@/lib/hooks/use-permissions'
 
 
 
 const AgentSection = () => {
+  const canCreate = useActionPermission("agents", "create");
+  const canEdit = useActionPermission("agents", "edit");
+  const canDelete = useActionPermission("agents", "delete");
+  const canView = useActionPermission("agents", "view");
+
   return (
     <section className="mb-8">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold">Agents</h2>
-            <Button>Create Agent</Button>
+            <PermissionWrapper permission="create:agents">
+              <Button>Create Agent</Button>
+            </PermissionWrapper>
           </div>
           <Card>
             <CardHeader>
@@ -28,15 +38,21 @@ const AgentSection = () => {
                     </p>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
-                      View
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      Edit
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      Delete
-                    </Button>
+                    {canView && (
+                      <Button variant="outline" size="sm">
+                        View
+                      </Button>
+                    )}
+                    {canEdit && (
+                      <Button variant="outline" size="sm">
+                        Edit
+                      </Button>
+                    )}
+                    {canDelete && (
+                      <Button variant="outline" size="sm">
+                        Delete
+                      </Button>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center justify-between rounded-lg border p-4">
@@ -47,15 +63,21 @@ const AgentSection = () => {
                     </p>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
-                      View
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      Edit
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      Delete
-                    </Button>
+                    {canView && (
+                      <Button variant="outline" size="sm">
+                        View
+                      </Button>
+                    )}
+                    {canEdit && (
+                      <Button variant="outline" size="sm">
+                        Edit
+                      </Button>
+                    )}
+                    {canDelete && (
+                      <Button variant="outline" size="sm">
+                        Delete
+                      </Button>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center justify-between rounded-lg border p-4">
@@ -66,15 +88,21 @@ const AgentSection = () => {
                     </p>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
-                      View
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      Edit
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      Delete
-                    </Button>
+                    {canView && (
+                      <Button variant="outline" size="sm">
+                        View
+                      </Button>
+                    )}
+                    {canEdit && (
+                      <Button variant="outline" size="sm">
+                        Edit
+                      </Button>
+                    )}
+                    {canDelete && (
+                      <Button variant="outline" size="sm">
+                        Delete
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>
