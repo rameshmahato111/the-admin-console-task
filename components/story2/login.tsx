@@ -35,6 +35,11 @@ export function LoginForm({
 
   return (
     <section className="max-w-lg mx-auto py-20">
+      <div className="font-bold mb-2"> 
+      <h1 >To login use these details for the specific roles</h1>
+      <p>admin@perceivenow.com, analyst@perceivenow.com, viewer@perceivenow.com</p>
+      <p>password:admin123, analyst123, viewer123</p>
+      </div>
     <div className={cn("flex flex-col gap-6", className)}>
       <Card>
         <CardHeader className="text-center">
