@@ -12,6 +12,7 @@ import {
   Shield,
   Users,
   Workflow,
+  Network,
 } from "lucide-react";
 
 const navigation = [
@@ -27,6 +28,12 @@ const navigation = [
     href: "/dashboard",
     icon: LayoutDashboard,
     feature: "metrics", // Dashboard is accessible to all logged-in users
+  },
+  {
+    name: "Workflow Studio",
+    href: "/workflow-studio",
+    icon: Network,
+    feature: "workflows",
   },
   {
     name: "Workflows",
