@@ -10,29 +10,40 @@ import DashboardNavbar from "./dash-nav";
 
 export default function DashboardPage() {
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-black">
+    <>
       <DashboardNavbar />
+      <main className="px-6 py-8">
+          {/* Metrics Overview */}
+          <section id="metrics">
+            <MetricOverView />
+          </section>
 
-      <main className="container mx-auto px-6 py-8">
-        {/* Metrics Overview */}
-        <MetricOverView/>
+          {/* Workflows Section */}
+          <section id="workflows" className="mt-8">
+            <WorkFlows />
+          </section>
 
-        {/* Workflows Section */}
-       <WorkFlows/>
+          {/* Agents Section */}
+          <section id="agents" className="mt-8">
+            <AgentSection />
+          </section>
 
-        {/* Agents Section */}
-       <AgentSection/>
+          {/* Policies Section */}
+          <section id="policies" className="mt-8">
+            <Policies />
+          </section>
 
-        {/* Policies Section */}
-       <Policies/>
+          {/* User Management */}
+          <section id="users" className="mt-8">
+            <UserManagement />
+          </section>
 
-       {/* user management */}
-        <UserManagement/>
-
-        {/* Telemetry/Logs Section */}
-       <LogSection/>
+          {/* Telemetry/Logs Section */}
+          <section id="logs" className="mt-8">
+            <LogSection />
+          </section>
       </main>
-    </div>
+    </>
   );
 }
 

@@ -34,9 +34,10 @@ export const LoginAction = async (
     // Remove password
     const { password: _, ...userWithoutPassword } = user;
 
-    // set cookie
+    // set cookie (Next.js cookies() handles encoding automatically)
     const cookieStore = await cookies();
-    cookieStore.set("user", JSON.stringify(userWithoutPassword), {
+    const userJson = JSON.stringify(userWithoutPassword);
+    cookieStore.set("user", userJson, {
       path: "/",
       maxAge: 86400, // 24h expiry
     });

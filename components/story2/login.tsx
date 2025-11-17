@@ -17,7 +17,6 @@ import {
 import { Input } from "@/components/ui/input"
 import { useActionState } from "react"
 import { LoginAction } from "@/app/login/login-action"
-import { useSearchParams } from "next/navigation"
 
 
 export function LoginForm({
@@ -25,8 +24,7 @@ export function LoginForm({
 
 }: React.ComponentProps<"div">) {
 
-  const searchParams = useSearchParams();
-  const redirectParam = searchParams.get("redirect");
+  
 
   const [state, formAction, isPending] = useActionState(LoginAction, {
     success: false,
@@ -47,9 +45,7 @@ export function LoginForm({
         </CardHeader>
         <CardContent>
           <form action={formAction} className="flex flex-col gap-4" >
-            {redirectParam && (
-              <input type="hidden" name="redirect" value={redirectParam} />
-            )}
+           
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>

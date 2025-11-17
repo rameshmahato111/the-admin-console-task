@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState, useRef } from "react";
 import type { LoginUser } from "@/app/login/login-action";
 import {
   getUserFromStorage,
@@ -23,41 +23,91 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<LoginUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const hasSyncedRef = useRef(false);
+
+  const syncUserFromCookie = () => {
+    if (typeof window === "undefined") return null;
+    
+    try {
+      // Get user data from cookie
+      const cookies = document.cookie.split("; ");
+      const userCookie = cookies.find((row) => row.trim().startsWith("user="));
+      
+      if (userCookie) {
+        
+        const cookieValue = userCookie.split("user=")[1]?.trim();
+        
+        if (!cookieValue) return null;
+       
+        let decodedValue = cookieValue;
+        try {
+          // Try to decode if it looks URL-encoded (starts with %)
+          if (decodedValue.includes("%")) {
+            decodedValue = decodeURIComponent(decodedValue);
+          }
+        } catch (e) {
+          
+        }
+        
+    
+        const userFromCookies = JSON.parse(decodedValue) as LoginUser;
+        
+      
+        const { saveUserToStorage } = require("@/lib/auth");
+        saveUserToStorage(userFromCookies);
+        return userFromCookies;
+      }
+    } catch (error) {
+      console.error("Error syncing user from cookie:", error);
+    }
+    return null;
+  };
 
   const refreshUser = () => {
-    const currentUser = getUserFromStorage();
+    let currentUser = getUserFromStorage();
+    
+    // If no user in localStorage, try to sync from cookie
+    if (!currentUser) {
+      const userFromCookie = syncUserFromCookie();
+      if (userFromCookie) {
+        currentUser = userFromCookie;
+      }
+    }
+    
     setUser(currentUser);
   };
 
   useEffect(() => {
-    // Load user from localStorage on mount
+    
     let currentUser = getUserFromStorage();
     
-    // If no user in localStorage but cookies exist, sync from cookies
-    if (!currentUser && typeof window !== "undefined") {
-      // Get user data from cookie
-      const userCookie = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("user="))
-        ?.split("=")[1];
-
-      if (userCookie) {
-        try {
-          const userFromCookies = JSON.parse(decodeURIComponent(userCookie)) as LoginUser;
-          // Save to localStorage for consistency
-          const { saveUserToStorage } = require("@/lib/auth");
-          saveUserToStorage(userFromCookies);
-          currentUser = userFromCookies;
-        } catch {
-          // If parsing fails, ignore
-        }
+  //  get user from the cookie if no user in localStorage
+    if (!currentUser) {
+      const userFromCookie = syncUserFromCookie();
+      if (userFromCookie) {
+        currentUser = userFromCookie;
       }
     }
 
     setUser(currentUser);
     setIsLoading(false);
 
-    // Listen for storage changes (e.g., when login happens in another tab)
+    const checkCookieInterval = setInterval(() => {
+      if (!hasSyncedRef.current) {
+        const userFromCookie = syncUserFromCookie();
+        if (userFromCookie) {
+          setUser(userFromCookie);
+          hasSyncedRef.current = true;
+        }
+      }
+    }, 100); // Check every 100ms
+
+    // Clear interval after 2 seconds
+    const timeoutId = setTimeout(() => {
+      clearInterval(checkCookieInterval);
+      hasSyncedRef.current = true; 
+    }, 2000);
+
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "loggedInUser") {
         refreshUser();
@@ -65,7 +115,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      clearInterval(checkCookieInterval);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const logout = () => {

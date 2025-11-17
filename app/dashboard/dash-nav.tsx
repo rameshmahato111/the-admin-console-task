@@ -1,6 +1,9 @@
+
+
+
 "use client";
 
-
+import { useEffect } from "react";
 import { useAuth } from "@/lib/auth-context";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -21,7 +24,27 @@ import {
 } from "lucide-react";
 
 export default function DashboardNavbar() {
-  const { user, logout, isLoading } = useAuth();
+  const { user, logout, isLoading, refreshUser } = useAuth();
+
+  // Sync user from cookie when component mounts (handles redirect from login)
+  useEffect(() => {
+    if (!user) {
+      // Try to refresh user immediately on mount
+      refreshUser();
+      
+      // Multiple attempts to sync from cookie (handles timing issues after redirect)
+      const timeouts = [
+        setTimeout(() => refreshUser(), 50),
+        setTimeout(() => refreshUser(), 150),
+        setTimeout(() => refreshUser(), 300),
+        setTimeout(() => refreshUser(), 500),
+      ];
+      
+      return () => {
+        timeouts.forEach(timeout => clearTimeout(timeout));
+      };
+    }
+  }, [user, refreshUser]);
 
   const getInitials = (name: string) => {
     return name
@@ -47,11 +70,11 @@ export default function DashboardNavbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-zinc-950/95 dark:supports-[backdrop-filter]:bg-zinc-950/60">
-      <div className="container mx-auto px-6 py-4">
+      <div className="px-6 py-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-semibold bg-gradient-to-r from-zinc-900 to-zinc-700 dark:from-zinc-100 dark:to-zinc-300 bg-clip-text text-transparent">
-              Admin Console
+            <h1 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+              Dashboard
             </h1>
             <p className="text-sm text-zinc-600 dark:text-zinc-400">
               Perceive Now - Workflow & Agent Management
@@ -140,7 +163,7 @@ export default function DashboardNavbar() {
 
                   <DropdownMenuSeparator />
 
-                  {/* Logout */}
+                 
                   <DropdownMenuItem
                     className="cursor-pointer text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400"
                     variant="destructive"
