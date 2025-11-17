@@ -1,28 +1,30 @@
+import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 
-import { Button } from '../ui/button'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui/card'
 
-const Policies = () => {
+
+
+const AgentSection = () => {
   return (
-       <section className="mb-8">
+    <section className="mb-8">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Policies</h2>
-            <Button>Create Policy</Button>
+            <h2 className="text-xl font-semibold">Agents</h2>
+            <Button>Create Agent</Button>
           </div>
           <Card>
             <CardHeader>
-              <CardTitle>Policy Management</CardTitle>
+              <CardTitle>Agent Management</CardTitle>
               <CardDescription>
-                Define and manage access control policies
+                Configure and manage automation agents
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-center justify-between rounded-lg border p-4">
                   <div>
-                    <h3 className="font-medium">Data Access Policy</h3>
+                    <h3 className="font-medium">Validation Agent v2.1</h3>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      Scope: All workflows | Status: Enforced
+                      Type: Data Validator | Status: Active
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -39,9 +41,9 @@ const Policies = () => {
                 </div>
                 <div className="flex items-center justify-between rounded-lg border p-4">
                   <div>
-                    <h3 className="font-medium">Resource Limit Policy</h3>
+                    <h3 className="font-medium">Image Processor Agent</h3>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      Scope: ML workflows | Status: Enforced
+                      Type: Image Processor | Status: Active
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -58,9 +60,9 @@ const Policies = () => {
                 </div>
                 <div className="flex items-center justify-between rounded-lg border p-4">
                   <div>
-                    <h3 className="font-medium">Security Policy</h3>
+                    <h3 className="font-medium">ML Training Agent</h3>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      Scope: All agents | Status: Enforced
+                      Type: ML Trainer | Status: Inactive
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -82,4 +84,4 @@ const Policies = () => {
   )
 }
 
-export default Policies
+export default AgentSection

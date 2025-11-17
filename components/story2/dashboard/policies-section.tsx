@@ -1,28 +1,29 @@
-import React from 'react'
-import { Button } from '../ui/button'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui/card'
+import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 
-const WorkFlows = () => {
+
+
+const Policies = () => {
   return (
-     <section className="mb-8">
+       <section className="mb-8">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Workflows</h2>
-            <Button>Create Workflow</Button>
+            <h2 className="text-xl font-semibold">Policies</h2>
+            <Button>Create Policy</Button>
           </div>
           <Card>
             <CardHeader>
-              <CardTitle>Workflow Management</CardTitle>
+              <CardTitle>Policy Management</CardTitle>
               <CardDescription>
-                Manage and monitor your validation pipelines
+                Define and manage access control policies
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-center justify-between rounded-lg border p-4">
                   <div>
-                    <h3 className="font-medium">Data Validation Pipeline</h3>
+                    <h3 className="font-medium">Data Access Policy</h3>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      Status: <span className="text-green-600">Running</span>
+                      Scope: All workflows | Status: Enforced
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -39,9 +40,9 @@ const WorkFlows = () => {
                 </div>
                 <div className="flex items-center justify-between rounded-lg border p-4">
                   <div>
-                    <h3 className="font-medium">Image Processing Workflow</h3>
+                    <h3 className="font-medium">Resource Limit Policy</h3>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      Status: <span className="text-yellow-600">Pending</span>
+                      Scope: ML workflows | Status: Enforced
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -58,9 +59,9 @@ const WorkFlows = () => {
                 </div>
                 <div className="flex items-center justify-between rounded-lg border p-4">
                   <div>
-                    <h3 className="font-medium">ML Model Training</h3>
+                    <h3 className="font-medium">Security Policy</h3>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      Status: <span className="text-red-600">Failed</span>
+                      Scope: All agents | Status: Enforced
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -82,4 +83,4 @@ const WorkFlows = () => {
   )
 }
 
-export default WorkFlows
+export default Policies

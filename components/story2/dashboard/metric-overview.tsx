@@ -1,5 +1,5 @@
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import React from 'react'
-import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
 
 const MetricOverView = () => {
   return (

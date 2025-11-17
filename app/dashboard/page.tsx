@@ -1,11 +1,11 @@
 "use client";
 
-import MetricOverView from "@/components/dashboard/metric-overview";
-import WorkFlows from "@/components/dashboard/work-flows";
-import Policies from "@/components/dashboard/policies-section";
-import AgentSection from "@/components/dashboard/agen-section";
-import LogSection from "@/components/dashboard/logs-section";
-import UserManagement from "@/components/dashboard/user-management";
+import MetricOverView from "@/components/story2/dashboard/metric-overview";
+import WorkFlows from "@/components/story2/dashboard/work-flows";
+import Policies from "@/components/story2/dashboard/policies-section";
+import AgentSection from "@/components/story2/dashboard/agen-section";
+import LogSection from "@/components/story2/dashboard/logs-section";
+import UserManagement from "@/components/story2/dashboard/user-management";
 import DashboardNavbar from "./dash-nav";
 
 export default function DashboardPage() {

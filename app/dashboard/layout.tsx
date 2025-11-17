@@ -1,6 +1,6 @@
 "use client";
 
-import Sidebar from "@/components/dashboard/sidebar";
+import Sidebar from "@/components/story2/dashboard/sidebar";
 import { Activity, useState } from "react";
 
 export default function DashboardLayout({

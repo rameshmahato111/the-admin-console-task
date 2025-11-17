@@ -1,28 +1,29 @@
+import { Button } from '@/components/ui/button'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import React from 'react'
-import { Button } from '../ui/button'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../ui/card'
 
-const AgentSection = () => {
+
+const WorkFlows = () => {
   return (
-    <section className="mb-8">
+     <section className="mb-8">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Agents</h2>
-            <Button>Create Agent</Button>
+            <h2 className="text-xl font-semibold">Workflows</h2>
+            <Button>Create Workflow</Button>
           </div>
           <Card>
             <CardHeader>
-              <CardTitle>Agent Management</CardTitle>
+              <CardTitle>Workflow Management</CardTitle>
               <CardDescription>
-                Configure and manage automation agents
+                Manage and monitor your validation pipelines
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-center justify-between rounded-lg border p-4">
                   <div>
-                    <h3 className="font-medium">Validation Agent v2.1</h3>
+                    <h3 className="font-medium">Data Validation Pipeline</h3>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      Type: Data Validator | Status: Active
+                      Status: <span className="text-green-600">Running</span>
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -39,9 +40,9 @@ const AgentSection = () => {
                 </div>
                 <div className="flex items-center justify-between rounded-lg border p-4">
                   <div>
-                    <h3 className="font-medium">Image Processor Agent</h3>
+                    <h3 className="font-medium">Image Processing Workflow</h3>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      Type: Image Processor | Status: Active
+                      Status: <span className="text-yellow-600">Pending</span>
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -58,9 +59,9 @@ const AgentSection = () => {
                 </div>
                 <div className="flex items-center justify-between rounded-lg border p-4">
                   <div>
-                    <h3 className="font-medium">ML Training Agent</h3>
+                    <h3 className="font-medium">ML Model Training</h3>
                     <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                      Type: ML Trainer | Status: Inactive
+                      Status: <span className="text-red-600">Failed</span>
                     </p>
                   </div>
                   <div className="flex gap-2">
@@ -82,4 +83,4 @@ const AgentSection = () => {
   )
 }
 
-export default AgentSection
+export default WorkFlows
