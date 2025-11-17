@@ -27,12 +27,26 @@ export function getUserFromStorage(): LoginUser | null {
 }
 
 
+/**
+ * Remove user data from localStorage (logout)
+ * Also clears cookies for server-side access
+ */
 export function removeUserFromStorage(): void {
   if (typeof window !== "undefined") {
     localStorage.removeItem(USER_STORAGE_KEY);
     // Also clear cookies
     document.cookie = "userRole=; path=/; max-age=0";
     document.cookie = "userEmail=; path=/; max-age=0";
+  }
+}
+
+/**
+ * Logout function - clears all auth data and redirects to login
+ */
+export function logout(): void {
+  removeUserFromStorage();
+  if (typeof window !== "undefined") {
+    window.location.href = "/login";
   }
 }
 

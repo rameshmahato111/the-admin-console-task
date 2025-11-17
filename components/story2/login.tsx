@@ -18,6 +18,8 @@ import { Input } from "@/components/ui/input"
 import { useActionState, useEffect } from "react"
 import { LoginAction } from "@/app/login/login-action"
 import { saveUserToStorage } from "@/lib/auth"
+import { useAuth } from "@/lib/auth-context"
+import { useRouter } from "next/navigation"
 
 
 export function LoginForm({
@@ -32,6 +34,9 @@ export function LoginForm({
     user: null
   })
 
+  const { refreshUser } = useAuth();
+  const router = useRouter();
+
   // Save user to localStorage when login is successful
   useEffect(() => {
     if (state.success && state.user) {
@@ -39,8 +44,14 @@ export function LoginForm({
       // Also set cookie for server-side access
       document.cookie = `userRole=${state.user.role}; path=/; max-age=86400`; // 24 hours
       document.cookie = `userEmail=${state.user.email}; path=/; max-age=86400`;
+      // Refresh auth context
+      refreshUser();
+      // Redirect to dashboard after a short delay
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 500);
     }
-  }, [state.success, state.user])
+  }, [state.success, state.user, refreshUser, router])
 
   return (
     <section className="max-w-lg mx-auto py-20">
