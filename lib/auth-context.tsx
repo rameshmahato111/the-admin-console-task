@@ -31,7 +31,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Load user from localStorage on mount
-    refreshUser();
+    let currentUser = getUserFromStorage();
+    
+    // If no user in localStorage but cookies exist, sync from cookies
+    if (!currentUser && typeof window !== "undefined") {
+      // Get user data from cookie
+      const userCookie = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("user="))
+        ?.split("=")[1];
+
+      if (userCookie) {
+        try {
+          const userFromCookies = JSON.parse(decodeURIComponent(userCookie)) as LoginUser;
+          // Save to localStorage for consistency
+          const { saveUserToStorage } = require("@/lib/auth");
+          saveUserToStorage(userFromCookies);
+          currentUser = userFromCookies;
+        } catch {
+          // If parsing fails, ignore
+        }
+      }
+    }
+
+    setUser(currentUser);
     setIsLoading(false);
 
     // Listen for storage changes (e.g., when login happens in another tab)

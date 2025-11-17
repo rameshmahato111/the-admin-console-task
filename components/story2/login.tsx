@@ -15,11 +15,9 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { useActionState, useEffect } from "react"
+import { useActionState } from "react"
 import { LoginAction } from "@/app/login/login-action"
-import { saveUserToStorage } from "@/lib/auth"
-import { useAuth } from "@/lib/auth-context"
-import { useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation"
 
 
 export function LoginForm({
@@ -27,31 +25,15 @@ export function LoginForm({
 
 }: React.ComponentProps<"div">) {
 
-  const [state, formAction, isPending]= useActionState(LoginAction, {
+  const searchParams = useSearchParams();
+  const redirectParam = searchParams.get("redirect");
+
+  const [state, formAction, isPending] = useActionState(LoginAction, {
     success: false,
     message: "",
     error: null,
-    user: null
-  })
-
-  const { refreshUser } = useAuth();
-  const router = useRouter();
-
-  // Save user to localStorage when login is successful
-  useEffect(() => {
-    if (state.success && state.user) {
-      saveUserToStorage(state.user);
-      // Also set cookie for server-side access
-      document.cookie = `userRole=${state.user.role}; path=/; max-age=86400`; // 24 hours
-      document.cookie = `userEmail=${state.user.email}; path=/; max-age=86400`;
-      // Refresh auth context
-      refreshUser();
-      // Redirect to dashboard after a short delay
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 500);
-    }
-  }, [state.success, state.user, refreshUser, router])
+    user: null,
+  });
 
   return (
     <section className="max-w-lg mx-auto py-20">
@@ -65,6 +47,9 @@ export function LoginForm({
         </CardHeader>
         <CardContent>
           <form action={formAction} className="flex flex-col gap-4" >
+            {redirectParam && (
+              <input type="hidden" name="redirect" value={redirectParam} />
+            )}
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>

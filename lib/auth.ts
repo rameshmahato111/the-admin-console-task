@@ -27,22 +27,16 @@ export function getUserFromStorage(): LoginUser | null {
 }
 
 
-/**
- * Remove user data from localStorage (logout)
- * Also clears cookies for server-side access
- */
+
 export function removeUserFromStorage(): void {
   if (typeof window !== "undefined") {
     localStorage.removeItem(USER_STORAGE_KEY);
     // Also clear cookies
-    document.cookie = "userRole=; path=/; max-age=0";
-    document.cookie = "userEmail=; path=/; max-age=0";
+    document.cookie = "user=; path=/; max-age=0";
   }
 }
 
-/**
- * Logout function - clears all auth data and redirects to login
- */
+
 export function logout(): void {
   removeUserFromStorage();
   if (typeof window !== "undefined") {
@@ -50,13 +44,12 @@ export function logout(): void {
   }
 }
 
-// checking user's role
+
 export function hasRole(user: LoginUser | null, requiredRole: string): boolean {
   if (!user) return false;
   return user.role === requiredRole;
 }
 
-// checking user's required role 
 export function hasAnyRole(
   user: LoginUser | null,
   requiredRoles: string[]
